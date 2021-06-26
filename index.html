@@ -1,11 +1,162 @@
 <html>
   <head>
-    <meta charset="UTF-8">
-    <script src="script.js"></script>
-    <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
+    <title>covin auto</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+      body {
+        background-color: #505050;
+        color: #ffffff;
+      }
+    </style>
   </head>
   <body>
-    <h1>Hello there!</h1>
-    <a href="/me.html">My other page</a>
+    <button id="loadStates">load states</button>
+
+    <form>
+      <label>Select states</label>
+      <select id="stateOptions"> </select>
+    </form>
+
+    <button id="loadDistricts">load district</button>
+
+    <form>
+      <label>Select districts</label>
+      <select id="districtOptions"> </select>
+    </form>
+
+    <button id="loadCentersOfAWeek">load centers with dose</button>
+
+    https://cdn-api.co-vin.in/api/v2/admin/location/districts/16
+
+    <table id="CentersOfAWeek">
+      <tr>
+        <th>name</th>
+        <th>capacity</th>
+      </tr>
+    </table>
+
+    <div>
+      <button id="tableState">Show table of all states</button>
+
+      <table id="myTable">
+        <tr>
+          <th>State id</th>
+          <th>State name</th>
+        </tr>
+      </table>
+    </div>
+
+    <script>
+      const covinBaseUrl = 'https://cdn-api.co-vin.in/api';
+
+      let data1;
+      let date = new Date();
+      let dateValue =
+        String(date.getDate()).padStart(2, '0') +
+        '-' +
+        String(date.getMonth() + 1).padStart(2, '0') +
+        '-' +
+        date.getFullYear();
+
+      let Centers = [];
+
+      $('#loadStates').click(function() {
+        $.get(covinBaseUrl + '/v2/admin/location/states', function(
+          data,
+          status
+        ) {
+          console.log(data);
+          data1 = data;
+          $('#stateOptions').html('');
+          /*$('#districtOptions').html("");*/
+          for (var i = 0; i < data.states.length; i++) {
+            var row = $(
+              '<option value = "' +
+                data.states[i].state_id +
+                '">' +
+                data.states[i].state_id +
+                '. ' +
+                data.states[i].state_name +
+                ' </option>'
+            );
+            $('#stateOptions').append(row);
+          }
+        });
+      });
+
+      $('#loadDistricts').click(function() {
+        $.get(
+          covinBaseUrl +
+            '/v2/admin/location/districts/' +
+            $('#stateOptions').val(),
+          function(data, status) {
+            console.log(data);
+            data1 = data;
+            $('#districtOptions').html('');
+            for (var i = 0; i < data.districts.length; i++) {
+              var row = $(
+                '<option value = "' +
+                  data.districts[i].district_id +
+                  '">' +
+                  data.districts[i].district_id +
+                  '. ' +
+                  data.districts[i].district_name +
+                  ' </option>'
+              );
+              $('#districtOptions').append(row);
+            }
+          }
+        );
+      });
+
+      ///v2/appointment/sessions/public/calendarByDistrict?district_id=512&date=31-03-2021
+      $('#loadCentersOfAWeek').click(function() {
+        $.get(
+          covinBaseUrl +
+            '/v2/appointment/sessions/public/calendarByDistrict?district_id=' +
+            $('#districtOptions').val() +
+            '&date=' +
+            dateValue,
+          function(data, status) {
+            console.log(data);
+            data1 = data;
+            centers = data;
+            $('#CentersOfAWeek').html('');
+            for (var i = 0; i < data.centers.length; i++) {
+              for (var j = 0; j < data.centers[i].sessions.length; j++) {
+                var row = $(
+                  '<tr><td>' +
+                    data.centers[i].name +
+                    '</td><td>' +
+                    data.centers[i].sessions[j].available_capacity +
+                    '</td><td>'
+                );
+                $('#CentersOfAWeek').append(row);
+              }
+            }
+          }
+        );
+      });
+
+      $('#tableState').click(function() {
+        $.get(covinBaseUrl + '/v2/admin/location/states', function(
+          data,
+          status
+        ) {
+          console.log(data);
+          data1 = data;
+          for (var i = 0; i < data.states.length; i++) {
+            var row = $(
+              '<tr><td>' +
+                data.states[i].state_id +
+                '</td><td>' +
+                data.states[i].state_name +
+                '</td><td>'
+            );
+            $('#myTable').append(row);
+          }
+        });
+      });
+    </script>
   </body>
 </html>
