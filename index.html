@@ -33,6 +33,7 @@
     <table id="CentersOfAWeek">
       <tr>
         <th>name</th>
+        <th>date</th>
         <th>capacity</th>
       </tr>
     </table>
@@ -132,6 +133,8 @@
                 var row = $(
                   '<tr><td>' +
                     data.centers[i].name +
+                    '</td><td>' +
+                    data.centers[i].sessions[j].date +
                     '</td><td>' +
                     data.centers[i].sessions[j].available_capacity +
                     '</td><td>'
