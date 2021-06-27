@@ -63,6 +63,7 @@
         date.getFullYear();
 
       let Centers = [];
+      let Centerswithdoses = [];
 
       $('#loadStates').click(function() {
         $.get(covinBaseUrl + '/v2/admin/location/states', function(
@@ -143,6 +144,7 @@
       });
 
       $('#cwithdose').click(function() {
+        Centerswithdoses = [];
         for (var i = 0; i < centers.length; i++) {
           for (var j = 0; j < centers[i].sessions.length; j++) {
             if (centers[i].sessions[j].available_capacity > 0) {
@@ -151,6 +153,8 @@
                   '  ' +
                   centers[i].sessions[j].available_capacity
               );
+
+              Centerswithdoses.push(centers[i]);
             }
           }
         }
