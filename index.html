@@ -1,56 +1,57 @@
 <html>
+  <head>
+    <title>covin auto</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+      body {
+        background-color: #505050;
+        color: #ffffff;
+      }
+    </style>
+  </head>
 
-<head>
-  <title>covin auto</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <style>
-    body {
-      background-color: #505050;
-      color: #ffffff;
-    }
-  </style>
-</head>
+  <body>
+    <h1>covin auto</h1>
+    <button id="loadStates">load states</button>
 
-<body>
-  <h1>covin auto</h1>
-  <button id="loadStates">load states</button>
+    <form>
+      <label>Select states</label>
+      <select id="stateOptions"> </select>
+    </form>
 
-  <form>
-    <label>Select states</label>
-    <select id="stateOptions"> </select>
-  </form>
+    <button id="loadDistricts">load district</button>
 
-  <button id="loadDistricts">load district</button>
+    <form>
+      <label>Select districts</label>
+      <select id="districtOptions"> </select>
+    </form>
 
-  <form>
-    <label>Select districts</label>
-    <select id="districtOptions"> </select>
-  </form>
+    <button id="loadCentersOfAWeek">load centers with facility</button>
 
-  <button id="loadCentersOfAWeek">load centers with dose</button>
+    https://cdn-api.co-vin.in/api/v2/admin/location/districts/16
 
-  https://cdn-api.co-vin.in/api/v2/admin/location/districts/16
-
-  <table id="CentersOfAWeek">
-    <tr>
-      <th>name</th>
-      <th>capacity</th>
-    </tr>
-  </table>
-
-  <div>
-    <button id="tableState">Show table of all states</button>
-
-    <table id="myTable">
+    <table id="CentersOfAWeek">
       <tr>
-        <th>State id</th>
-        <th>State name</th>
+        <th>name</th>
+        <th>capacity</th>
       </tr>
     </table>
-  </div>
 
-  <script>
-    const covinBaseUrl = 'https://cdn-api.co-vin.in/api';
+    <button id="cwithdose">centers with dose</button>
+
+    <div>
+      <button id="tableState">Show table of all states</button>
+
+      <table id="myTable">
+        <tr>
+          <th>State id</th>
+          <th>State name</th>
+        </tr>
+      </table>
+    </div>
+
+    <script>
+      const covinBaseUrl = 'https://cdn-api.co-vin.in/api';
 
       let data1;
       let date = new Date();
@@ -123,7 +124,7 @@
           function(data, status) {
             console.log(data);
             data1 = data;
-            centers = data;
+            centers = data.centers;
             $('#CentersOfAWeek').html('');
             for (var i = 0; i < data.centers.length; i++) {
               for (var j = 0; j < data.centers[i].sessions.length; j++) {
@@ -139,6 +140,20 @@
             }
           }
         );
+      });
+
+      $('#cwithdose').click(function() {
+        for (var i = 0; i < centers.length; i++) {
+          for (var j = 0; j < centers[i].sessions.length; j++) {
+            if (centers[i].sessions[j].available_capacity > 0) {
+              console.log(
+                centers[i].name +
+                  '  ' +
+                  centers[i].sessions[j].available_capacity
+              );
+            }
+          }
+        }
       });
 
       $('#tableState').click(function() {
@@ -160,7 +175,6 @@
           }
         });
       });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
