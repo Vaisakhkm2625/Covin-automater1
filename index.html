@@ -1,53 +1,56 @@
 <html>
-  <head>
-    <title>covin auto</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <style>
-      body {
-        background-color: #505050;
-        color: #ffffff;
-      }
-    </style>
-  </head>
-  <body>
-    <button id="loadStates">load states</button>
 
-    <form>
-      <label>Select states</label>
-      <select id="stateOptions"> </select>
-    </form>
+<head>
+  <title>covin auto</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <style>
+    body {
+      background-color: #505050;
+      color: #ffffff;
+    }
+  </style>
+</head>
 
-    <button id="loadDistricts">load district</button>
+<body>
+  <h1>covin auto</h1>
+  <button id="loadStates">load states</button>
 
-    <form>
-      <label>Select districts</label>
-      <select id="districtOptions"> </select>
-    </form>
+  <form>
+    <label>Select states</label>
+    <select id="stateOptions"> </select>
+  </form>
 
-    <button id="loadCentersOfAWeek">load centers with dose</button>
+  <button id="loadDistricts">load district</button>
 
-    https://cdn-api.co-vin.in/api/v2/admin/location/districts/16
+  <form>
+    <label>Select districts</label>
+    <select id="districtOptions"> </select>
+  </form>
 
-    <table id="CentersOfAWeek">
+  <button id="loadCentersOfAWeek">load centers with dose</button>
+
+  https://cdn-api.co-vin.in/api/v2/admin/location/districts/16
+
+  <table id="CentersOfAWeek">
+    <tr>
+      <th>name</th>
+      <th>capacity</th>
+    </tr>
+  </table>
+
+  <div>
+    <button id="tableState">Show table of all states</button>
+
+    <table id="myTable">
       <tr>
-        <th>name</th>
-        <th>capacity</th>
+        <th>State id</th>
+        <th>State name</th>
       </tr>
     </table>
+  </div>
 
-    <div>
-      <button id="tableState">Show table of all states</button>
-
-      <table id="myTable">
-        <tr>
-          <th>State id</th>
-          <th>State name</th>
-        </tr>
-      </table>
-    </div>
-
-    <script>
-      const covinBaseUrl = 'https://cdn-api.co-vin.in/api';
+  <script>
+    const covinBaseUrl = 'https://cdn-api.co-vin.in/api';
 
       let data1;
       let date = new Date();
@@ -157,6 +160,7 @@
           }
         });
       });
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>
